@@ -1,1 +1,86 @@
-//code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reward Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen">
+
+<div class="max-w-md mx-auto p-4 space-y-4">
+
+  <!-- PROFILE -->
+  <div class="card flex items-center gap-4">
+    <img id="avatar" class="w-14 h-14 rounded-full"/>
+    <div>
+      <h2 class="text-lg font-bold">Alex Johnson</h2>
+      <p id="userId" class="text-sm text-gray-400"></p>
+    </div>
+  </div>
+
+  <!-- CHECKIN -->
+  <div class="card flex justify-between items-center">
+    <div>
+      <h3 class="font-semibold">Daily Check-in</h3>
+      <p id="streak"></p>
+    </div>
+    <button onclick="checkIn()" class="btn">Check In</button>
+  </div>
+
+  <!-- TASKS -->
+  <div class="card">
+    <h3>Total Points: <span id="points">0</span></h3>
+
+    <label class="task">
+      <span>Follow Twitter (+50)</span>
+      <input type="checkbox" onchange="completeTask(50,this)">
+    </label>
+
+    <label class="task">
+      <span>Join Telegram (+100)</span>
+      <input type="checkbox" onchange="completeTask(100,this)">
+    </label>
+
+    <label class="task">
+      <span>Share Post (+80)</span>
+      <input type="checkbox" onchange="completeTask(80,this)">
+    </label>
+  </div>
+
+  <!-- REFER -->
+  <div class="card">
+    <h3>Refer a Friend</h3>
+    <p class="text-sm text-gray-400">Earn 200 points</p>
+
+    <div id="refCode" class="ref-box"></div>
+
+    <button onclick="copyRef()" class="btn-blue">Copy Link</button>
+  </div>
+
+  <!-- WITHDRAW -->
+  <div class="card">
+    <h3>💎 Balance: <span id="balance"></span> pts</h3>
+    <button id="withdrawBtn" onclick="withdraw()" class="btn-green">
+      Withdraw
+    </button>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <p>Withdrawal request sent (min 1000 pts)</p>
+    <button onclick="closeModal()" class="btn">OK</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
