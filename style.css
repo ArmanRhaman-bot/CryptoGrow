@@ -1,0 +1,60 @@
+.card {
+  background: #1f2937;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.btn {
+  background: #a855f7;
+  padding: 8px 16px;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-blue {
+  background: #3b82f6;
+  padding: 10px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.btn-green {
+  background: #22c55e;
+  padding: 10px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.ref-box {
+  background: #374151;
+  padding: 8px;
+  border-radius: 10px;
+  margin: 8px 0;
+  text-align: center;
+}
+
+.modal {
+  position: fixed;
+  top:0;left:0;right:0;bottom:0;
+  background: rgba(0,0,0,0.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-box {
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:12px;
+}
