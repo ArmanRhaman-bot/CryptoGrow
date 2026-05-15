@@ -1,213 +1,682 @@
-// Telegram WebApp
-let tg = window.Telegram.WebApp;
-tg.expand();
-
-// Bot Configuration
-const BOT_TOKEN = "8697935116:AAGkCTTPE0a509WNzkOTbcJEMJtDDyGOgm0";
-let BOT_USERNAME = "CryptoGrowBot";
-
-// User Data
-let userId = "";
-let points = parseInt(localStorage.getItem("points") || "0");
-let streak = parseInt(localStorage.getItem("streak") || "0");
-let lastCheckinDate = localStorage.getItem("lastCheckinDate") || "";
-let referralCount = parseInt(localStorage.getItem("referralCount") || "0");
-let referralEarned = parseInt(localStorage.getItem("referralEarned") || "0");
-
-// Task Completion
-let tasksCompleted = {
-  twitter: localStorage.getItem("task_twitter") === "true",
-  telegram: localStorage.getItem("task_telegram") === "true",
-  share: localStorage.getItem("task_share") === "true"
-};
-
-// Fetch Bot Username
-async function fetchBotUsername() {
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getMe`);
-    const data = await res.json();
-    if (data.ok && data.result.username) {
-      BOT_USERNAME = data.result.username;
-      updateRefLink();
-    }
-  } catch(e) { console.warn("Using default bot"); }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-// Initialize User
-function initUser() {
-  if (tg.initDataUnsafe?.user) {
-    let user = tg.initDataUnsafe.user;
-    document.getElementById("userName").innerText = `${user.first_name || "Crypto"} ${user.last_name || ""}`.trim();
-    userId = user.id.toString();
-    localStorage.setItem("uid", userId);
-  } else {
-    userId = localStorage.getItem("uid") || ("UID-" + Math.random().toString(36).substring(2, 10).toUpperCase());
-    localStorage.setItem("uid", userId);
-    if (!localStorage.getItem("userName")) localStorage.setItem("userName", "Alex Johnson");
-    document.getElementById("userName").innerText = localStorage.getItem("userName");
-  }
-  document.getElementById("userId").innerHTML = userId;
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(180deg, #0A0C15 0%, #12141F 100%);
+  color: #FFFFFF;
+  min-height: 100vh;
 }
 
-// Get Referral Link
-function getRefLink() {
-  return `https://t.me/${BOT_USERNAME}?start=ref-${userId}`;
+.mobile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 0 20px 90px 20px;
+  position: relative;
 }
 
-function updateRefLink() {
-  document.getElementById("refLinkText").innerText = getRefLink();
+/* Status Bar */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8E9AAF;
 }
 
-// Copy Referral Link
-window.copyUserId = function() {
-  navigator.clipboard.writeText(userId);
-  showToast("User ID copied!");
-};
-
-document.getElementById("copyRefBtn")?.addEventListener("click", () => {
-  navigator.clipboard.writeText(getRefLink());
-  showToast("Referral link copied!");
-});
-
-// Update UI
-function updateUI() {
-  document.getElementById("pointsDisplay").innerText = points;
-  document.getElementById("streakDisplay").innerText = streak;
-  document.getElementById("balanceAmount").innerHTML = points;
-  
-  let percent = Math.min((points / 1000) * 100, 100);
-  document.getElementById("withdrawProgress").style.width = percent + "%";
-  document.getElementById("progressPercent").innerText = Math.floor(percent) + "%";
-  
-  document.getElementById("referralCount").innerText = referralCount;
-  document.getElementById("referralEarned").innerText = referralEarned;
-  
-  localStorage.setItem("points", points);
-  localStorage.setItem("streak", streak);
-  localStorage.setItem("referralCount", referralCount);
-  localStorage.setItem("referralEarned", referralEarned);
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-// Check-in
-window.checkIn = function() {
-  const today = new Date().toDateString();
-  if (lastCheckinDate === today) {
-    showToast("Already checked in today!");
-    return;
-  }
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  if (lastCheckinDate === yesterday.toDateString()) streak++;
-  else streak = 1;
-  
-  points += 20;
-  lastCheckinDate = today;
-  localStorage.setItem("lastCheckinDate", today);
-  updateUI();
-  showToast("Check-in successful! +20 points", "success");
-};
-
-// Complete Task
-window.completeTask = function(value, checkbox, taskKey) {
-  if (checkbox.checked) {
-    if (tasksCompleted[taskKey]) {
-      showToast("Task already completed!");
-      checkbox.checked = true;
-      return;
-    }
-    points += value;
-    tasksCompleted[taskKey] = true;
-    localStorage.setItem(`task_${taskKey}`, "true");
-    updateUI();
-    showToast(`+${value} points earned!`, "success");
-  } else {
-    if (tasksCompleted[taskKey]) checkbox.checked = true;
-  }
-};
-
-// Withdraw
-document.getElementById("withdrawBtn")?.addEventListener("click", () => {
-  let amount = parseInt(document.getElementById("withdrawAmount")?.value);
-  let address = document.getElementById("withdrawAddress")?.value;
-  
-  if (!address) {
-    showToast("Please enter wallet address!", "error");
-    return;
-  }
-  if (!amount || amount < 1000) {
-    showToast("Minimum withdrawal is 1000 points!", "error");
-    return;
-  }
-  if (amount > points) {
-    showToast("Insufficient balance!", "error");
-    return;
-  }
-  
-  points -= amount;
-  updateUI();
-  showToast(`Withdrawal request sent! ${amount} points will be processed.`, "success");
-  document.getElementById("withdrawAmount").value = "";
-  document.getElementById("withdrawAddress").value = "";
-});
-
-// Theme Toggle
-document.getElementById("themeToggle")?.addEventListener("click", () => {
-  document.body.classList.toggle("light");
-  let icon = document.querySelector("#themeToggle i");
-  if (document.body.classList.contains("light")) {
-    icon.className = "fas fa-sun";
-    document.body.style.background = "#F5F7FA";
-  } else {
-    icon.className = "fas fa-moon";
-    document.body.style.background = "linear-gradient(180deg, #0A0C15 0%, #12141F 100%)";
-  }
-});
-
-// Logout
-document.getElementById("logoutBtn")?.addEventListener("click", () => {
-  if (confirm("Reset all progress?")) {
-    localStorage.clear();
-    location.reload();
-  }
-});
-
-// Toast
-function showToast(msg, type = "info") {
-  let toast = document.getElementById("toast");
-  toast.innerText = msg;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2500);
+.greeting {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-// Init
-document.addEventListener("DOMContentLoaded", () => {
-  initUser();
-  updateUI();
-  initCheckboxes();
-  fetchBotUsername().then(() => updateRefLink());
-  document.getElementById("checkinBtn")?.addEventListener("click", window.checkIn);
-  
-  // Withdraw method selector
-  document.querySelectorAll(".withdraw-method").forEach(method => {
-    method.addEventListener("click", function() {
-      document.querySelectorAll(".withdraw-method").forEach(m => m.classList.remove("active"));
-      this.classList.add("active");
-    });
-  });
-});
-
-function initCheckboxes() {
-  document.getElementById("taskTwitter").checked = tasksCompleted.twitter;
-  document.getElementById("taskTelegram").checked = tasksCompleted.telegram;
-  document.getElementById("taskShare").checked = tasksCompleted.share;
+.wave {
+  font-size: 32px;
 }
 
-// Bottom Nav
-document.querySelectorAll(".nav-item").forEach((item, idx) => {
-  item.addEventListener("click", () => {
-    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-    item.classList.add("active");
-    let msgs = ["Home", "Analytics Coming Soon", "Rewards Coming Soon", "Profile"];
-    showToast(msgs[idx]);
-  });
-});
+.greeting-text {
+  font-size: 13px;
+  color: #8E9AAF;
+  letter-spacing: 0.3px;
+}
+
+.greeting h1 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-circle {
+  width: 42px;
+  height: 42px;
+  background: rgba(30, 35, 55, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+  font-size: 18px;
+}
+
+.icon-circle:hover {
+  background: rgba(139, 92, 246, 0.2);
+  transform: scale(0.95);
+}
+
+/* User ID Badge */
+.user-id-badge {
+  background: rgba(30, 35, 55, 0.6);
+  backdrop-filter: blur(8px);
+  padding: 10px 16px;
+  border-radius: 60px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.copy-id-btn {
+  background: none;
+  border: none;
+  color: #8E9AAF;
+  cursor: pointer;
+  padding: 4px;
+  transition: 0.2s;
+}
+
+.copy-id-btn:hover {
+  color: #A855F7;
+}
+
+/* Stats Row */
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  flex: 1;
+  background: linear-gradient(135deg, #1A1D2E 0%, #151826 100%);
+  border-radius: 24px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.stat-icon.purple {
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+}
+
+.stat-icon.orange {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #8E9AAF;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+/* Check-in Card */
+.checkin-card {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border-radius: 28px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.checkin-content {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.checkin-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #A855F7;
+}
+
+.checkin-text h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.checkin-text p {
+  font-size: 12px;
+  color: #8E9AAF;
+  margin-top: 4px;
+}
+
+.checkin-btn {
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 40px;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.checkin-btn:hover {
+  transform: scale(1.02);
+  filter: brightness(1.05);
+}
+
+/* Section Header */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 24px 0 16px 0;
+}
+
+.section-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-badge {
+  background: rgba(139, 92, 246, 0.15);
+  padding: 4px 10px;
+  border-radius: 40px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #A855F7;
+}
+
+/* Quest List */
+.quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quest-item {
+  background: #151826;
+  border-radius: 20px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s;
+}
+
+.quest-item:hover {
+  background: #1A1D2E;
+  transform: translateX(4px);
+}
+
+.quest-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.quest-icon.twitter-bg {
+  background: #1DA1F2;
+}
+.quest-icon.telegram-bg {
+  background: #26A5E4;
+}
+.quest-icon.share-bg {
+  background: #10B981;
+}
+
+.quest-info {
+  flex: 1;
+}
+
+.quest-info h4 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.quest-info p {
+  font-size: 11px;
+  color: #8E9AAF;
+  margin-top: 2px;
+}
+
+.quest-reward {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reward-amount {
+  font-weight: 700;
+  color: #F59E0B;
+  font-size: 14px;
+}
+
+.checkbox-wrapper input {
+  width: 22px;
+  height: 22px;
+  accent-color: #8B5CF6;
+  cursor: pointer;
+}
+
+/* Referral Card */
+.referral-card {
+  background: linear-gradient(135deg, #1A1D2E, #131625);
+  border-radius: 24px;
+  padding: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.referral-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.referral-stat {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 800;
+  display: block;
+  background: linear-gradient(135deg, #F59E0B, #FCD34D);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.referral-divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.referral-link-box {
+  background: #0F111A;
+  padding: 12px 16px;
+  border-radius: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.ref-link {
+  font-size: 12px;
+  font-family: monospace;
+  color: #A855F7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-link-btn {
+  background: #8B5CF6;
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.copy-link-btn:hover {
+  background: #6D28D9;
+  transform: scale(0.95);
+}
+
+.referral-note {
+  font-size: 11px;
+  color: #8E9AAF;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Withdraw Premium Card */
+.withdraw-premium-card {
+  background: linear-gradient(135deg, #121624, #0E1018);
+  border-radius: 28px;
+  padding: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  margin-top: 4px;
+}
+
+.balance-preview {
+  position: relative;
+  background: linear-gradient(135deg, #1A1D2E, #131625);
+  border-radius: 24px;
+  padding: 20px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.balance-glow {
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.3), transparent);
+  border-radius: 50%;
+}
+
+.balance-content {
+  position: relative;
+  z-index: 1;
+}
+
+.balance-label {
+  font-size: 12px;
+  color: #8E9AAF;
+  letter-spacing: 0.5px;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+
+.currency-icon {
+  font-size: 28px;
+  color: #10B981;
+}
+
+.balance-amount span:first-of-type {
+  font-size: 42px;
+  font-weight: 800;
+}
+
+.currency-unit {
+  font-size: 14px;
+  color: #8E9AAF;
+}
+
+.progress-container {
+  background: #0F111A;
+  border-radius: 60px;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #10B981, #34D399);
+  height: 100%;
+  border-radius: 60px;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #8E9AAF;
+}
+
+.withdraw-options {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.withdraw-method {
+  flex: 1;
+  background: #0F111A;
+  padding: 10px;
+  text-align: center;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 1px solid transparent;
+}
+
+.withdraw-method i {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.withdraw-method span {
+  font-size: 11px;
+}
+
+.withdraw-method.active {
+  background: linear-gradient(135deg, #1A1D2E, #131625);
+  border-color: #10B981;
+  color: #10B981;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+  color: #8E9AAF;
+}
+
+.input-field {
+  background: #0F111A;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.input-field i {
+  color: #8E9AAF;
+}
+
+.input-field input {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+}
+
+.input-field input::placeholder {
+  color: #4A4F6A;
+}
+
+.withdraw-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #10B981, #059669);
+  border: none;
+  padding: 16px;
+  border-radius: 60px;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  margin: 8px 0 16px;
+}
+
+.withdraw-submit-btn:hover:not(:disabled) {
+  transform: scale(1.01);
+  filter: brightness(1.05);
+}
+
+.withdraw-submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.withdraw-footer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fee-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 400px;
+  margin: 0 auto;
+  background: rgba(18, 20, 31, 0.95);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 20px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #5B6A8A;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 12px;
+}
+
+.nav-item i {
+  font-size: 22px;
+}
+
+.nav-item.active {
+  color: #A855F7;
+}
+
+/* Toast */
+.toast-modern {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1A1D2E;
+  backdrop-filter: blur(12px);
+  padding: 12px 24px;
+  border-radius: 60px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  white-space: nowrap;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.toast-modern.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card, .quest-item, .referral-card, .withdraw-premium-card {
+  animation: slideUp 0.4s ease forwards;
+}
