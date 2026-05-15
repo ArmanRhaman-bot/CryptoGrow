@@ -1,60 +1,77 @@
+body.light {
+  background: #f3f4f6;
+  color: black;
+}
+
 .card {
   background: #1f2937;
   padding: 16px;
   border-radius: 16px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
 .btn {
-  background: #a855f7;
+  background: linear-gradient(to right, #9333ea, #3b82f6);
   padding: 8px 16px;
   border-radius: 12px;
-  transition: 0.3s;
-}
-.btn:hover {
-  transform: scale(1.05);
 }
 
 .btn-blue {
   background: #3b82f6;
   padding: 10px;
-  border-radius: 12px;
   width: 100%;
+  border-radius: 12px;
 }
 
 .btn-green {
   background: #22c55e;
   padding: 10px;
-  border-radius: 12px;
   width: 100%;
+  border-radius: 12px;
 }
 
 .task {
   display: flex;
   justify-content: space-between;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .ref-box {
   background: #374151;
   padding: 8px;
   border-radius: 10px;
-  margin: 8px 0;
-  text-align: center;
+  margin: 10px 0;
 }
 
-.modal {
+.bottom-nav {
   position: fixed;
-  top:0;left:0;right:0;bottom:0;
-  background: rgba(0,0,0,0.7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  background: #111827;
+  padding: 10px;
 }
 
-.modal-box {
-  background:white;
-  color:black;
-  padding:20px;
-  border-radius:12px;
+.bottom-nav button {
+  color: gray;
+}
+
+.bottom-nav .active {
+  color: #a855f7;
+}
+
+.icon-btn {
+  background: #1f2937;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  padding: 10px 20px;
+  border-radius: 10px;
 }
