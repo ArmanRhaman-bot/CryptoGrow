@@ -2,91 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CryptoGrow</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CryptoGrow | Earn & Grow</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+<body id="body">
 
-<body id="body" class="bg-gray-900 text-white">
-
-<div class="max-w-md mx-auto p-4 space-y-4 pb-20">
-
-  <!-- TOP BAR -->
-  <div class="flex justify-between items-center">
-    <button onclick="toggleTheme()" class="icon-btn">🌙</button>
-    <button onclick="logout()" class="icon-btn">Logout</button>
+<div class="app-container">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <button id="themeToggle" class="icon-btn">
+      <i class="fas fa-moon"></i>
+    </button>
+    <button id="logoutBtn" class="icon-btn logout-btn">
+      <i class="fas fa-sign-out-alt"></i> <span>Exit</span>
+    </button>
   </div>
 
-  <!-- PROFILE -->
-  <div class="card flex items-center gap-4">
-    <img id="avatar" class="w-16 h-16 rounded-full"/>
-    <div>
-      <h2 class="text-xl font-bold" id="name">Alex Johnson</h2>
-      <p id="userId" class="text-sm text-gray-400"></p>
+  <!-- Profile Card -->
+  <div class="card profile-card">
+    <div class="avatar-wrapper">
+      <img id="avatar" class="avatar" alt="avatar">
+      <div class="online-dot"></div>
+    </div>
+    <div class="profile-info">
+      <h2 id="name">Loading...</h2>
+      <p id="userId" class="user-id"><i class="fas fa-id-card"></i> <span></span></p>
+    </div>
+    <div class="member-badge">
+      <i class="fas fa-gem"></i> member
     </div>
   </div>
 
-  <!-- CHECKIN -->
-  <div class="card flex justify-between items-center">
-    <div>
-      <h3>Daily Check-in</h3>
-      <p id="streak"></p>
+  <!-- Daily Check-in -->
+  <div class="card checkin-card">
+    <div class="checkin-left">
+      <h3><i class="fas fa-calendar-check"></i> Daily Check-in</h3>
+      <p id="streak"><i class="fas fa-fire"></i> <span>0 day streak</span></p>
     </div>
-    <button onclick="checkIn()" class="btn">Check In</button>
+    <button id="checkinBtn" class="btn-gradient">
+      <i class="fas fa-check-circle"></i> Check In
+    </button>
   </div>
 
-  <!-- POINTS -->
-  <div class="card">
-    <h3>Total Points: <span id="points">0</span></h3>
-
-    <label class="task">
-      <span>Follow Twitter (+50)</span>
-      <input type="checkbox" onchange="completeTask(50,this)">
-    </label>
-
-    <label class="task">
-      <span>Join Telegram (+100)</span>
-      <input type="checkbox" onchange="completeTask(100,this)">
-    </label>
-
-    <label class="task">
-      <span>Share Post (+80)</span>
-      <input type="checkbox" onchange="completeTask(80,this)">
-    </label>
+  <!-- Points & Tasks -->
+  <div class="card tasks-card">
+    <div class="points-header">
+      <h3><i class="fas fa-coins"></i> Total Points</h3>
+      <span id="points" class="points-value">0</span>
+    </div>
+    <div class="tasks-list">
+      <label class="task-item">
+        <span><i class="fab fa-twitter"></i> Follow on Twitter <span class="points-badge">+50</span></span>
+        <input type="checkbox" id="taskTwitter" onchange="completeTask(50, this, 'twitter')">
+      </label>
+      <label class="task-item">
+        <span><i class="fab fa-telegram"></i> Join Telegram Group <span class="points-badge">+100</span></span>
+        <input type="checkbox" id="taskTelegram" onchange="completeTask(100, this, 'telegram')">
+      </label>
+      <label class="task-item">
+        <span><i class="fas fa-share-alt"></i> Share Post <span class="points-badge">+80</span></span>
+        <input type="checkbox" id="taskShare" onchange="completeTask(80, this, 'share')">
+      </label>
+    </div>
   </div>
 
-  <!-- REFER -->
-  <div class="card">
-    <h3>Refer a Friend</h3>
-    <div id="refCode" class="ref-box"></div>
-    <button onclick="copyRef()" class="btn-blue">Copy Link</button>
+  <!-- Referral Section -->
+  <div class="card referral-card">
+    <h3><i class="fas fa-user-plus"></i> Refer a Friend</h3>
+    <p class="referral-desc">Earn <strong>200 points</strong> per referral</p>
+    <div class="ref-link-box">
+      <span id="refLinkText">Generating...</span>
+      <i class="fas fa-link"></i>
+    </div>
+    <button id="copyRefBtn" class="btn-blue">
+      <i class="fas fa-copy"></i> Copy Referral Link
+    </button>
   </div>
 
-  <!-- WITHDRAW -->
-  <div class="card">
-    <h3>💎 Balance: <span id="balance"></span></h3>
-    <button id="withdrawBtn" onclick="withdraw()" class="btn-green">Withdraw</button>
+  <!-- Withdraw Section -->
+  <div class="card withdraw-card">
+    <div class="withdraw-header">
+      <h3><i class="fas fa-wallet"></i> Balance</h3>
+      <span id="balance" class="balance-value">0</span>
+    </div>
+    <p class="min-requirement"><i class="fas fa-info-circle"></i> Minimum 1000 pts to withdraw</p>
+    <button id="withdrawBtn" class="btn-green">
+      <i class="fas fa-arrow-down"></i> Withdraw
+    </button>
   </div>
-
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- Bottom Navigation -->
 <div class="bottom-nav">
-  <button class="active">🏠</button>
-  <button>📋</button>
-  <button>👥</button>
-  <button>🏦</button>
+  <button class="nav-active"><i class="fas fa-home"></i><span>Home</span></button>
+  <button><i class="fas fa-chart-line"></i><span>Stats</span></button>
+  <button><i class="fas fa-users"></i><span>Community</span></button>
+  <button><i class="fas fa-archive"></i><span>Vault</span></button>
 </div>
 
-<!-- TOAST -->
+<!-- Toast Message -->
 <div id="toast" class="toast hidden"></div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
