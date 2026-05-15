@@ -1,24 +1,24 @@
-// USER ID
-function generateUID(){
-  return "UID-" + Math.random().toString(36).substring(2,9).toUpperCase();
-}
+// TELEGRAM INIT
+let tg = window.Telegram.WebApp;
+tg.expand();
 
-if(!localStorage.uid){
-  localStorage.uid = generateUID();
+if(tg.initDataUnsafe?.user){
+  let user = tg.initDataUnsafe.user;
+
+  document.getElementById("name").innerText =
+    user.first_name + " " + (user.last_name || "");
+
+  document.getElementById("avatar").src =
+    `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`;
+
+  localStorage.uid = "" + user.id;
+}else{
+  if(!localStorage.uid){
+    localStorage.uid = "UID-" + Math.random().toString(36).substr(2,6);
+  }
 }
 
 document.getElementById("userId").innerText = localStorage.uid;
-
-// AVATAR
-document.getElementById("avatar").src =
-`https://api.dicebear.com/7.x/avataaars/svg?seed=${localStorage.uid}`;
-
-
-// REF CODE
-if(!localStorage.ref){
-  localStorage.ref = "REF" + Math.random().toString(36).substring(2,8).toUpperCase();
-}
-document.getElementById("refCode").innerText = localStorage.ref;
 
 
 // DATA
@@ -26,7 +26,7 @@ let points = parseInt(localStorage.points || 0);
 let streak = parseInt(localStorage.streak || 0);
 
 
-// UI UPDATE
+// UPDATE UI
 function updateUI(){
   document.getElementById("points").innerText = points;
   document.getElementById("balance").innerText = points;
@@ -34,7 +34,6 @@ function updateUI(){
 
   document.getElementById("withdrawBtn").disabled = points < 1000;
 }
-
 updateUI();
 
 
@@ -43,12 +42,13 @@ function completeTask(val, el){
   if(el.checked){
     points += val;
     localStorage.points = points;
+    toast("Task completed!");
     updateUI();
   }
 }
 
 
-// CHECK-IN
+// CHECKIN
 function checkIn(){
   streak++;
   points += 20;
@@ -56,26 +56,47 @@ function checkIn(){
   localStorage.streak = streak;
   localStorage.points = points;
 
-  alert("Check-in successful!");
+  toast("Check-in successful!");
   updateUI();
 }
 
 
 // COPY REF
 function copyRef(){
-  let link = "https://yourapp.com/ref/" + localStorage.ref;
+  let link = "https://yourapp.com/ref/" + localStorage.uid;
   navigator.clipboard.writeText(link);
-  alert("Copied!");
+  toast("Copied!");
 }
 
 
 // WITHDRAW
 function withdraw(){
   if(points >= 1000){
-    document.getElementById("modal").classList.remove("hidden");
+    toast("Withdrawal request sent");
   }
 }
 
-function closeModal(){
-  document.getElementById("modal").classList.add("hidden");
+
+// THEME
+function toggleTheme(){
+  document.body.classList.toggle("light");
+}
+
+
+// TOAST
+function toast(msg){
+  let t = document.getElementById("toast");
+  t.innerText = msg;
+  t.classList.remove("hidden");
+
+  setTimeout(()=>{
+    t.classList.add("hidden");
+  },2000);
+}
+
+
+// LOGOUT
+function logout(){
+  localStorage.clear();
+  location.reload();
 }
