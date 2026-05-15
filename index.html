@@ -6,105 +6,262 @@
 <title>CryptoGrow | Earn & Grow</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body id="body">
+<body>
 
-<div class="app-container">
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <button id="themeToggle" class="icon-btn">
-      <i class="fas fa-moon"></i>
-    </button>
-    <button id="logoutBtn" class="icon-btn logout-btn">
-      <i class="fas fa-sign-out-alt"></i> <span>Exit</span>
-    </button>
+<div class="mobile-container">
+  
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <span><i class="fas fa-signal"></i> <i class="fas fa-battery-full"></i></span>
   </div>
 
-  <!-- Profile Card -->
-  <div class="card profile-card">
-    <div class="avatar-wrapper">
-      <img id="avatar" class="avatar" alt="avatar">
-      <div class="online-dot"></div>
+  <!-- Header -->
+  <div class="header">
+    <div class="greeting">
+      <span class="wave">👋</span>
+      <div>
+        <p class="greeting-text">Welcome back</p>
+        <h1 id="userName">Alex Johnson</h1>
+      </div>
     </div>
-    <div class="profile-info">
-      <h2 id="name">Loading...</h2>
-      <p id="userId" class="user-id"><i class="fas fa-id-card"></i> <span></span></p>
-    </div>
-    <div class="member-badge">
-      <i class="fas fa-gem"></i> member
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-circle">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="logoutBtn" class="icon-circle logout-icon">
+        <i class="fas fa-arrow-right-from-bracket"></i>
+      </button>
     </div>
   </div>
 
-  <!-- Daily Check-in -->
+  <!-- User ID Badge -->
+  <div class="user-id-badge">
+    <i class="fas fa-id-card"></i>
+    <span id="userId">UID-2F7K9LQ</span>
+    <button onclick="copyUserId()" class="copy-id-btn"><i class="fas fa-copy"></i></button>
+  </div>
+
+  <!-- Stats Cards Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon purple"><i class="fas fa-star"></i></div>
+      <div class="stat-info">
+        <span class="stat-label">Total Points</span>
+        <span class="stat-value" id="pointsDisplay">0</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange"><i class="fas fa-fire"></i></div>
+      <div class="stat-info">
+        <span class="stat-label">Streak</span>
+        <span class="stat-value" id="streakDisplay">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Check-in Card -->
   <div class="card checkin-card">
-    <div class="checkin-left">
-      <h3><i class="fas fa-calendar-check"></i> Daily Check-in</h3>
-      <p id="streak"><i class="fas fa-fire"></i> <span>0 day streak</span></p>
+    <div class="checkin-content">
+      <div class="checkin-icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="checkin-text">
+        <h3>Daily Check-in</h3>
+        <p>Check in daily to earn rewards</p>
+      </div>
     </div>
-    <button id="checkinBtn" class="btn-gradient">
-      <i class="fas fa-check-circle"></i> Check In
+    <button id="checkinBtn" class="checkin-btn">
+      <span>Check In</span>
+      <i class="fas fa-arrow-right"></i>
     </button>
   </div>
 
-  <!-- Points & Tasks -->
-  <div class="card tasks-card">
-    <div class="points-header">
-      <h3><i class="fas fa-coins"></i> Total Points</h3>
-      <span id="points" class="points-value">0</span>
+  <!-- Quest Section (Tasks) -->
+  <div class="section-header">
+    <h2><i class="fas fa-trophy"></i> Daily Quests</h2>
+    <span class="section-badge">+230 available</span>
+  </div>
+
+  <div class="quest-list">
+    <div class="quest-item" data-quest="twitter">
+      <div class="quest-icon twitter-bg">
+        <i class="fab fa-twitter"></i>
+      </div>
+      <div class="quest-info">
+        <h4>Follow on Twitter</h4>
+        <p>Follow our official Twitter page</p>
+      </div>
+      <div class="quest-reward">
+        <span class="reward-amount">+50</span>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="taskTwitter" onchange="completeTask(50, this, 'twitter')">
+        </div>
+      </div>
     </div>
-    <div class="tasks-list">
-      <label class="task-item">
-        <span><i class="fab fa-twitter"></i> Follow on Twitter <span class="points-badge">+50</span></span>
-        <input type="checkbox" id="taskTwitter" onchange="completeTask(50, this, 'twitter')">
-      </label>
-      <label class="task-item">
-        <span><i class="fab fa-telegram"></i> Join Telegram Group <span class="points-badge">+100</span></span>
-        <input type="checkbox" id="taskTelegram" onchange="completeTask(100, this, 'telegram')">
-      </label>
-      <label class="task-item">
-        <span><i class="fas fa-share-alt"></i> Share Post <span class="points-badge">+80</span></span>
-        <input type="checkbox" id="taskShare" onchange="completeTask(80, this, 'share')">
-      </label>
+
+    <div class="quest-item" data-quest="telegram">
+      <div class="quest-icon telegram-bg">
+        <i class="fab fa-telegram"></i>
+      </div>
+      <div class="quest-info">
+        <h4>Join Telegram</h4>
+        <p>Join our Telegram community</p>
+      </div>
+      <div class="quest-reward">
+        <span class="reward-amount">+100</span>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="taskTelegram" onchange="completeTask(100, this, 'telegram')">
+        </div>
+      </div>
+    </div>
+
+    <div class="quest-item" data-quest="share">
+      <div class="quest-icon share-bg">
+        <i class="fas fa-share-alt"></i>
+      </div>
+      <div class="quest-info">
+        <h4>Share Post</h4>
+        <p>Share our post on social media</p>
+      </div>
+      <div class="quest-reward">
+        <span class="reward-amount">+80</span>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="taskShare" onchange="completeTask(80, this, 'share')">
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Referral Section -->
-  <div class="card referral-card">
-    <h3><i class="fas fa-user-plus"></i> Refer a Friend</h3>
-    <p class="referral-desc">Earn <strong>200 points</strong> per referral</p>
-    <div class="ref-link-box">
-      <span id="refLinkText">Generating...</span>
-      <i class="fas fa-link"></i>
-    </div>
-    <button id="copyRefBtn" class="btn-blue">
-      <i class="fas fa-copy"></i> Copy Referral Link
-    </button>
+  <div class="section-header">
+    <h2><i class="fas fa-users"></i> Invite Friends</h2>
+    <span class="section-badge">200 pts each</span>
   </div>
 
-  <!-- Withdraw Section -->
-  <div class="card withdraw-card">
-    <div class="withdraw-header">
-      <h3><i class="fas fa-wallet"></i> Balance</h3>
-      <span id="balance" class="balance-value">0</span>
+  <div class="referral-card">
+    <div class="referral-stats">
+      <div class="referral-stat">
+        <span class="stat-number" id="referralCount">0</span>
+        <span class="stat-label">Referrals</span>
+      </div>
+      <div class="referral-divider"></div>
+      <div class="referral-stat">
+        <span class="stat-number" id="referralEarned">0</span>
+        <span class="stat-label">Points Earned</span>
+      </div>
     </div>
-    <p class="min-requirement"><i class="fas fa-info-circle"></i> Minimum 1000 pts to withdraw</p>
-    <button id="withdrawBtn" class="btn-green">
-      <i class="fas fa-arrow-down"></i> Withdraw
+    <div class="referral-link-box">
+      <span id="refLinkText" class="ref-link">Loading...</span>
+      <button id="copyRefBtn" class="copy-link-btn">
+        <i class="fas fa-copy"></i>
+      </button>
+    </div>
+    <p class="referral-note">
+      <i class="fas fa-info-circle"></i> Each friend earns you 200 points
+    </p>
+  </div>
+
+  <!-- Withdraw Section - Redesigned Premium -->
+  <div class="section-header">
+    <h2><i class="fas fa-coins"></i> Withdraw Funds</h2>
+    <span class="section-badge">min 1000 pts</span>
+  </div>
+
+  <div class="withdraw-premium-card">
+    <div class="balance-preview">
+      <div class="balance-glow"></div>
+      <div class="balance-content">
+        <span class="balance-label">Available Balance</span>
+        <div class="balance-amount">
+          <span class="currency-icon"><i class="fas fa-gem"></i></span>
+          <span id="balanceAmount">0</span>
+          <span class="currency-unit">points</span>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" id="withdrawProgress" style="width: 0%"></div>
+        </div>
+        <div class="progress-text">
+          <span>Progress to withdrawal</span>
+          <span id="progressPercent">0%</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="withdraw-options">
+      <div class="withdraw-method active">
+        <i class="fab fa-usdt"></i>
+        <span>USDT (TRC20)</span>
+      </div>
+      <div class="withdraw-method">
+        <i class="fab fa-bitcoin"></i>
+        <span>BTC</span>
+      </div>
+      <div class="withdraw-method">
+        <i class="fas fa-phone-alt"></i>
+        <span>Mobile</span>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Wallet Address / Phone</label>
+      <div class="input-field">
+        <i class="fas fa-wallet"></i>
+        <input type="text" id="withdrawAddress" placeholder="Enter your wallet address">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Amount to Withdraw</label>
+      <div class="input-field">
+        <i class="fas fa-coins"></i>
+        <input type="number" id="withdrawAmount" placeholder="Min 1000 points">
+      </div>
+    </div>
+
+    <button id="withdrawBtn" class="withdraw-submit-btn">
+      <span>Withdraw Now</span>
+      <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <div class="withdraw-footer">
+      <div class="fee-info">
+        <i class="fas fa-clock"></i>
+        <span>Processing: 24-48 hours</span>
+      </div>
+      <div class="fee-info">
+        <i class="fas fa-shield-alt"></i>
+        <span>Secure withdrawal</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button class="nav-item active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </button>
+    <button class="nav-item">
+      <i class="fas fa-chart-simple"></i>
+      <span>Analytics</span>
+    </button>
+    <button class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </button>
+    <button class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
     </button>
   </div>
 </div>
 
-<!-- Bottom Navigation -->
-<div class="bottom-nav">
-  <button class="nav-active"><i class="fas fa-home"></i><span>Home</span></button>
-  <button><i class="fas fa-chart-line"></i><span>Stats</span></button>
-  <button><i class="fas fa-users"></i><span>Community</span></button>
-  <button><i class="fas fa-archive"></i><span>Vault</span></button>
-</div>
-
-<!-- Toast Message -->
-<div id="toast" class="toast hidden"></div>
+<!-- Toast Container -->
+<div id="toast" class="toast-modern"></div>
 
 <script src="script.js"></script>
 </body>
