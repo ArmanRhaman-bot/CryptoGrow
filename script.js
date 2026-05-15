@@ -1,4 +1,4 @@
-// Telegram WebApp Initialization
+// Telegram WebApp
 let tg = window.Telegram.WebApp;
 tg.expand();
 
@@ -11,108 +11,94 @@ let userId = "";
 let points = parseInt(localStorage.getItem("points") || "0");
 let streak = parseInt(localStorage.getItem("streak") || "0");
 let lastCheckinDate = localStorage.getItem("lastCheckinDate") || "";
+let referralCount = parseInt(localStorage.getItem("referralCount") || "0");
+let referralEarned = parseInt(localStorage.getItem("referralEarned") || "0");
 
-// Task Completion Flags
+// Task Completion
 let tasksCompleted = {
   twitter: localStorage.getItem("task_twitter") === "true",
   telegram: localStorage.getItem("task_telegram") === "true",
   share: localStorage.getItem("task_share") === "true"
 };
 
-// Fetch Bot Username from Telegram API
+// Fetch Bot Username
 async function fetchBotUsername() {
   try {
-    const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getMe`);
-    const data = await response.json();
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getMe`);
+    const data = await res.json();
     if (data.ok && data.result.username) {
       BOT_USERNAME = data.result.username;
-      updateReferralLink();
+      updateRefLink();
     }
-  } catch (error) {
-    console.warn("Using default bot username");
-  }
+  } catch(e) { console.warn("Using default bot"); }
 }
 
-// Initialize User from Telegram or Fallback
+// Initialize User
 function initUser() {
   if (tg.initDataUnsafe?.user) {
     let user = tg.initDataUnsafe.user;
-    document.getElementById("name").innerText = `${user.first_name || "Crypto"} ${user.last_name || ""}`.trim();
+    document.getElementById("userName").innerText = `${user.first_name || "Crypto"} ${user.last_name || ""}`.trim();
     userId = user.id.toString();
     localStorage.setItem("uid", userId);
-    document.getElementById("avatar").src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}&backgroundColor=purple`;
-    document.getElementById("userId").querySelector("span").innerText = userId;
   } else {
-    if (!localStorage.getItem("uid")) {
-      userId = "UID-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-      localStorage.setItem("uid", userId);
-    } else {
-      userId = localStorage.getItem("uid");
-    }
-    let storedName = localStorage.getItem("userName");
-    if (storedName) {
-      document.getElementById("name").innerText = storedName;
-    } else {
-      document.getElementById("name").innerText = "Alex Johnson";
-      localStorage.setItem("userName", "Alex Johnson");
-    }
-    document.getElementById("avatar").src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${userId}`;
-    document.getElementById("userId").querySelector("span").innerText = userId;
+    userId = localStorage.getItem("uid") || ("UID-" + Math.random().toString(36).substring(2, 10).toUpperCase());
+    localStorage.setItem("uid", userId);
+    if (!localStorage.getItem("userName")) localStorage.setItem("userName", "Alex Johnson");
+    document.getElementById("userName").innerText = localStorage.getItem("userName");
   }
+  document.getElementById("userId").innerHTML = userId;
 }
 
-// Generate Referral Deep Link
-function getReferralLink() {
+// Get Referral Link
+function getRefLink() {
   return `https://t.me/${BOT_USERNAME}?start=ref-${userId}`;
 }
 
-function updateReferralLink() {
-  document.getElementById("refLinkText").innerText = getReferralLink();
+function updateRefLink() {
+  document.getElementById("refLinkText").innerText = getRefLink();
 }
 
 // Copy Referral Link
-async function copyRefLink() {
-  const link = getReferralLink();
-  try {
-    await navigator.clipboard.writeText(link);
-    showToast("Referral link copied! Share with friends.", "success");
-  } catch (err) {
-    showToast("Press Ctrl+C to copy", "info");
-  }
-}
+window.copyUserId = function() {
+  navigator.clipboard.writeText(userId);
+  showToast("User ID copied!");
+};
 
-// Update UI Elements
+document.getElementById("copyRefBtn")?.addEventListener("click", () => {
+  navigator.clipboard.writeText(getRefLink());
+  showToast("Referral link copied!");
+});
+
+// Update UI
 function updateUI() {
-  document.getElementById("points").innerText = points;
-  document.getElementById("balance").innerText = points;
-  document.getElementById("streak").innerHTML = `<i class="fas fa-fire"></i> <span>${streak} day streak</span>`;
+  document.getElementById("pointsDisplay").innerText = points;
+  document.getElementById("streakDisplay").innerText = streak;
+  document.getElementById("balanceAmount").innerHTML = points;
   
-  const withdrawBtn = document.getElementById("withdrawBtn");
-  if (points < 1000) {
-    withdrawBtn.disabled = true;
-  } else {
-    withdrawBtn.disabled = false;
-  }
+  let percent = Math.min((points / 1000) * 100, 100);
+  document.getElementById("withdrawProgress").style.width = percent + "%";
+  document.getElementById("progressPercent").innerText = Math.floor(percent) + "%";
+  
+  document.getElementById("referralCount").innerText = referralCount;
+  document.getElementById("referralEarned").innerText = referralEarned;
   
   localStorage.setItem("points", points);
   localStorage.setItem("streak", streak);
+  localStorage.setItem("referralCount", referralCount);
+  localStorage.setItem("referralEarned", referralEarned);
 }
 
-// Check-in Function
+// Check-in
 window.checkIn = function() {
   const today = new Date().toDateString();
   if (lastCheckinDate === today) {
-    showToast("You already checked in today!", "warning");
+    showToast("Already checked in today!");
     return;
   }
-  
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  if (lastCheckinDate === yesterday.toDateString()) {
-    streak++;
-  } else {
-    streak = 1;
-  }
+  if (lastCheckinDate === yesterday.toDateString()) streak++;
+  else streak = 1;
   
   points += 20;
   lastCheckinDate = today;
@@ -125,7 +111,7 @@ window.checkIn = function() {
 window.completeTask = function(value, checkbox, taskKey) {
   if (checkbox.checked) {
     if (tasksCompleted[taskKey]) {
-      showToast("Task already completed!", "warning");
+      showToast("Task already completed!");
       checkbox.checked = true;
       return;
     }
@@ -135,92 +121,93 @@ window.completeTask = function(value, checkbox, taskKey) {
     updateUI();
     showToast(`+${value} points earned!`, "success");
   } else {
-    if (tasksCompleted[taskKey]) {
-      checkbox.checked = true;
-      showToast("Cannot undo completed task", "info");
-    }
+    if (tasksCompleted[taskKey]) checkbox.checked = true;
   }
 };
 
-// Withdraw Function
-window.withdraw = function() {
-  if (points >= 1000) {
-    showToast("Withdrawal request sent successfully!", "success");
-  } else {
-    showToast(`Need ${1000 - points} more points to withdraw`, "error");
-    const btn = document.getElementById("withdrawBtn");
-    btn.style.animation = "pulse 0.3s ease";
-    setTimeout(() => btn.style.animation = "", 300);
+// Withdraw
+document.getElementById("withdrawBtn")?.addEventListener("click", () => {
+  let amount = parseInt(document.getElementById("withdrawAmount")?.value);
+  let address = document.getElementById("withdrawAddress")?.value;
+  
+  if (!address) {
+    showToast("Please enter wallet address!", "error");
+    return;
   }
-};
-
-// Toast Notification
-function showToast(message, type = "success") {
-  const toast = document.getElementById("toast");
-  toast.innerText = message;
-  toast.classList.remove("hidden");
+  if (!amount || amount < 1000) {
+    showToast("Minimum withdrawal is 1000 points!", "error");
+    return;
+  }
+  if (amount > points) {
+    showToast("Insufficient balance!", "error");
+    return;
+  }
   
-  let borderColor = "#22c55e";
-  if (type === "error") borderColor = "#ef4444";
-  if (type === "warning") borderColor = "#f59e0b";
-  toast.style.borderLeftColor = borderColor;
-  
-  setTimeout(() => {
-    toast.classList.add("hidden");
-  }, 2500);
-}
+  points -= amount;
+  updateUI();
+  showToast(`Withdrawal request sent! ${amount} points will be processed.`, "success");
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAddress").value = "";
+});
 
 // Theme Toggle
-function toggleTheme() {
+document.getElementById("themeToggle")?.addEventListener("click", () => {
   document.body.classList.toggle("light");
-  const icon = document.querySelector("#themeToggle i");
+  let icon = document.querySelector("#themeToggle i");
   if (document.body.classList.contains("light")) {
     icon.className = "fas fa-sun";
+    document.body.style.background = "#F5F7FA";
   } else {
     icon.className = "fas fa-moon";
+    document.body.style.background = "linear-gradient(180deg, #0A0C15 0%, #12141F 100%)";
   }
-}
+});
 
-// Logout / Reset
-function logout() {
-  if (confirm("Are you sure? All progress will be reset.")) {
+// Logout
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  if (confirm("Reset all progress?")) {
     localStorage.clear();
     location.reload();
   }
+});
+
+// Toast
+function showToast(msg, type = "info") {
+  let toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
 }
 
-// Initialize Checkboxes State
+// Init
+document.addEventListener("DOMContentLoaded", () => {
+  initUser();
+  updateUI();
+  initCheckboxes();
+  fetchBotUsername().then(() => updateRefLink());
+  document.getElementById("checkinBtn")?.addEventListener("click", window.checkIn);
+  
+  // Withdraw method selector
+  document.querySelectorAll(".withdraw-method").forEach(method => {
+    method.addEventListener("click", function() {
+      document.querySelectorAll(".withdraw-method").forEach(m => m.classList.remove("active"));
+      this.classList.add("active");
+    });
+  });
+});
+
 function initCheckboxes() {
   document.getElementById("taskTwitter").checked = tasksCompleted.twitter;
   document.getElementById("taskTelegram").checked = tasksCompleted.telegram;
   document.getElementById("taskShare").checked = tasksCompleted.share;
 }
 
-// Bottom Navigation Active State
-function initBottomNav() {
-  const navBtns = document.querySelectorAll(".bottom-nav button");
-  navBtns.forEach((btn, idx) => {
-    btn.addEventListener("click", () => {
-      navBtns.forEach(b => b.classList.remove("nav-active"));
-      btn.classList.add("nav-active");
-      const messages = ["Home Dashboard", "Statistics (Coming Soon)", "Invite Friends for 200 pts", "Withdrawal History"];
-      showToast(messages[idx], "info");
-    });
+// Bottom Nav
+document.querySelectorAll(".nav-item").forEach((item, idx) => {
+  item.addEventListener("click", () => {
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    item.classList.add("active");
+    let msgs = ["Home", "Analytics Coming Soon", "Rewards Coming Soon", "Profile"];
+    showToast(msgs[idx]);
   });
-}
-
-// Event Listeners
-document.addEventListener("DOMContentLoaded", () => {
-  initUser();
-  initCheckboxes();
-  updateUI();
-  fetchBotUsername().then(() => updateReferralLink());
-  
-  document.getElementById("checkinBtn").addEventListener("click", window.checkIn);
-  document.getElementById("copyRefBtn").addEventListener("click", copyRefLink);
-  document.getElementById("withdrawBtn").addEventListener("click", window.withdraw);
-  document.getElementById("themeToggle").addEventListener("click", toggleTheme);
-  document.getElementById("logoutBtn").addEventListener("click", logout);
-  
-  initBottomNav();
 });
