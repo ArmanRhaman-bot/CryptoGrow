@@ -134,8 +134,8 @@ const SOCIAL_TASKS = [
   { id: "share", name: "Share post", desc: "Share our announcement post", points: 100000000, verifyUrl: "https://t.me/seemybiodata" },
   // নতুন টাস্ক যোগ করুন এখানে
   { id: "youtube", name: "Subscribe on YouTube", desc: "Subscribe to our YouTube channel", points: 1200, verifyUrl: "https://youtube.com/@cryptogrow" },
-  { id: "discord", name: "Join Discord", desc: "Join our Discord community", points: 1000, verifyUrl: "https://discord.gg/cryptogrow" },
-  { id: "instagram", name: "Follow on Instagram", desc: "Follow @mr_arman_rhaman on Instagram", points: 6000, verifyUrl: "https://instagram.com/mr_arman_rhaman" }
+  { id: "discord", name: "Join Discord", desc: "Join our Discord community", points: 1000000000, verifyUrl: "https://discord.gg/cryptogrow" },
+  { id: "instagram", name: "Follow on Instagram", desc: "Follow @mr_arman_rhaman on Instagram", points: 600000000, verifyUrl: "https://instagram.com/mr_arman_rhaman" }
 ];
 
 function renderTasks() {
