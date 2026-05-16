@@ -131,7 +131,8 @@ function fallbackRefLink() {
 const SOCIAL_TASKS = [
   { id: "twitter", name: "Follow us on Twitter", desc: "Follow @CryptoGrow on Twitter", points: 50, verifyUrl: "https://twitter.com/intent/follow?screen_name=CryptoGrow" },
   { id: "telegram", name: "Join Telegram group", desc: "Join our official Telegram community", points: 100, verifyUrl: "https://t.me/cryptogrowofficial" },
-  { id: "share", name: "Share post", desc: "Share our announcement post", points: 80, verifyUrl: "https://t.me/cryptogrowofficial/1" }
+  { id: "share", name: "Share post", desc: "Share our announcement post", points: 80, verifyUrl: "https://t.me/cryptogrowofficial/1" },
+{ id: "share", name: "Say Hey", desc: "Send a message", points: 5000, verifyUrl: "https://t.me/arman_rhaman" }
 ];
 
 function renderTasks() {
