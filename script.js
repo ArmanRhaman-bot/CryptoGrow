@@ -1,682 +1,273 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(180deg, #0A0C15 0%, #12141F 100%);
-  color: #FFFFFF;
-  min-height: 100vh;
-}
-
-.mobile-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 0 20px 90px 20px;
-  position: relative;
-}
-
-/* Status Bar */
-.status-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #8E9AAF;
-}
-
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.greeting {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.wave {
-  font-size: 32px;
-}
-
-.greeting-text {
-  font-size: 13px;
-  color: #8E9AAF;
-  letter-spacing: 0.3px;
-}
-
-.greeting h1 {
-  font-size: 20px;
-  font-weight: 700;
-  margin-top: 2px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.icon-circle {
-  width: 42px;
-  height: 42px;
-  background: rgba(30, 35, 55, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: white;
-  font-size: 18px;
-}
-
-.icon-circle:hover {
-  background: rgba(139, 92, 246, 0.2);
-  transform: scale(0.95);
-}
-
-/* User ID Badge */
-.user-id-badge {
-  background: rgba(30, 35, 55, 0.6);
-  backdrop-filter: blur(8px);
-  padding: 10px 16px;
-  border-radius: 60px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-  font-size: 13px;
-  font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.copy-id-btn {
-  background: none;
-  border: none;
-  color: #8E9AAF;
-  cursor: pointer;
-  padding: 4px;
-  transition: 0.2s;
-}
-
-.copy-id-btn:hover {
-  color: #A855F7;
-}
-
-/* Stats Row */
-.stats-row {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.stat-card {
-  flex: 1;
-  background: linear-gradient(135deg, #1A1D2E 0%, #151826 100%);
-  border-radius: 24px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-
-.stat-icon.purple {
-  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
-}
-
-.stat-icon.orange {
-  background: linear-gradient(135deg, #F59E0B, #D97706);
-}
-
-.stat-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: #8E9AAF;
-}
-
-.stat-value {
-  font-size: 28px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-/* Check-in Card */
-.checkin-card {
-  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-  border-radius: 28px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
-  border: 1px solid rgba(139, 92, 246, 0.2);
-}
-
-.checkin-content {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.checkin-icon {
-  width: 52px;
-  height: 52px;
-  background: rgba(139, 92, 246, 0.15);
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  color: #A855F7;
-}
-
-.checkin-text h3 {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.checkin-text p {
-  font-size: 12px;
-  color: #8E9AAF;
-  margin-top: 4px;
-}
-
-.checkin-btn {
-  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
-  border: none;
-  padding: 12px 20px;
-  border-radius: 40px;
-  color: white;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.checkin-btn:hover {
-  transform: scale(1.02);
-  filter: brightness(1.05);
-}
-
-/* Section Header */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin: 24px 0 16px 0;
-}
-
-.section-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.section-badge {
-  background: rgba(139, 92, 246, 0.15);
-  padding: 4px 10px;
-  border-radius: 40px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #A855F7;
-}
-
-/* Quest List */
-.quest-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.quest-item {
-  background: #151826;
-  border-radius: 20px;
-  padding: 14px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.2s;
-}
-
-.quest-item:hover {
-  background: #1A1D2E;
-  transform: translateX(4px);
-}
-
-.quest-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-
-.quest-icon.twitter-bg {
-  background: #1DA1F2;
-}
-.quest-icon.telegram-bg {
-  background: #26A5E4;
-}
-.quest-icon.share-bg {
-  background: #10B981;
-}
-
-.quest-info {
-  flex: 1;
-}
-
-.quest-info h4 {
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.quest-info p {
-  font-size: 11px;
-  color: #8E9AAF;
-  margin-top: 2px;
-}
-
-.quest-reward {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.reward-amount {
-  font-weight: 700;
-  color: #F59E0B;
-  font-size: 14px;
-}
-
-.checkbox-wrapper input {
-  width: 22px;
-  height: 22px;
-  accent-color: #8B5CF6;
-  cursor: pointer;
-}
-
-/* Referral Card */
-.referral-card {
-  background: linear-gradient(135deg, #1A1D2E, #131625);
-  border-radius: 24px;
-  padding: 20px;
-  border: 1px solid rgba(139, 92, 246, 0.15);
-}
-
-.referral-stats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.referral-stat {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 28px;
-  font-weight: 800;
-  display: block;
-  background: linear-gradient(135deg, #F59E0B, #FCD34D);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-.referral-divider {
-  width: 1px;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.referral-link-box {
-  background: #0F111A;
-  padding: 12px 16px;
-  border-radius: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.ref-link {
-  font-size: 12px;
-  font-family: monospace;
-  color: #A855F7;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.copy-link-btn {
-  background: #8B5CF6;
-  border: none;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.copy-link-btn:hover {
-  background: #6D28D9;
-  transform: scale(0.95);
-}
-
-.referral-note {
-  font-size: 11px;
-  color: #8E9AAF;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Withdraw Premium Card */
-.withdraw-premium-card {
-  background: linear-gradient(135deg, #121624, #0E1018);
-  border-radius: 28px;
-  padding: 20px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  margin-top: 4px;
-}
-
-.balance-preview {
-  position: relative;
-  background: linear-gradient(135deg, #1A1D2E, #131625);
-  border-radius: 24px;
-  padding: 20px;
-  margin-bottom: 24px;
-  overflow: hidden;
-}
-
-.balance-glow {
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.3), transparent);
-  border-radius: 50%;
-}
-
-.balance-content {
-  position: relative;
-  z-index: 1;
-}
-
-.balance-label {
-  font-size: 12px;
-  color: #8E9AAF;
-  letter-spacing: 0.5px;
-}
-
-.balance-amount {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin: 12px 0 16px;
-}
-
-.currency-icon {
-  font-size: 28px;
-  color: #10B981;
-}
-
-.balance-amount span:first-of-type {
-  font-size: 42px;
-  font-weight: 800;
-}
-
-.currency-unit {
-  font-size: 14px;
-  color: #8E9AAF;
-}
-
-.progress-container {
-  background: #0F111A;
-  border-radius: 60px;
-  height: 6px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-.progress-bar {
-  background: linear-gradient(90deg, #10B981, #34D399);
-  height: 100%;
-  border-radius: 60px;
-  transition: width 0.5s ease;
-}
-
-.progress-text {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: #8E9AAF;
-}
-
-.withdraw-options {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.withdraw-method {
-  flex: 1;
-  background: #0F111A;
-  padding: 10px;
-  text-align: center;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: 0.2s;
-  border: 1px solid transparent;
-}
-
-.withdraw-method i {
-  font-size: 20px;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.withdraw-method span {
-  font-size: 11px;
-}
-
-.withdraw-method.active {
-  background: linear-gradient(135deg, #1A1D2E, #131625);
-  border-color: #10B981;
-  color: #10B981;
-}
-
-.input-group {
-  margin-bottom: 16px;
-}
-
-.input-group label {
-  font-size: 12px;
-  font-weight: 500;
-  margin-bottom: 8px;
-  display: block;
-  color: #8E9AAF;
-}
-
-.input-field {
-  background: #0F111A;
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.input-field i {
-  color: #8E9AAF;
-}
-
-.input-field input {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 14px;
-  width: 100%;
-  outline: none;
-}
-
-.input-field input::placeholder {
-  color: #4A4F6A;
-}
-
-.withdraw-submit-btn {
-  width: 100%;
-  background: linear-gradient(135deg, #10B981, #059669);
-  border: none;
-  padding: 16px;
-  border-radius: 60px;
-  color: white;
-  font-weight: 700;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-  margin: 8px 0 16px;
-}
-
-.withdraw-submit-btn:hover:not(:disabled) {
-  transform: scale(1.01);
-  filter: brightness(1.05);
-}
-
-.withdraw-submit-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.withdraw-footer {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.fee-info {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: #6B7280;
-}
-
-/* Bottom Navigation */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 400px;
-  margin: 0 auto;
-  background: rgba(18, 20, 31, 0.95);
-  backdrop-filter: blur(20px);
-  display: flex;
-  justify-content: space-around;
-  padding: 12px 20px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.nav-item {
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: #5B6A8A;
-  cursor: pointer;
-  transition: 0.2s;
-  font-size: 12px;
-}
-
-.nav-item i {
-  font-size: 22px;
-}
-
-.nav-item.active {
-  color: #A855F7;
-}
-
-/* Toast */
-.toast-modern {
-  position: fixed;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1A1D2E;
-  backdrop-filter: blur(12px);
-  padding: 12px 24px;
-  border-radius: 60px;
-  font-size: 13px;
-  font-weight: 500;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s;
-  white-space: nowrap;
-  border: 1px solid rgba(139, 92, 246, 0.3);
-}
-
-.toast-modern.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Animations */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* ===================================================
+   CryptoGrow – script.js
+   =================================================== */
+
+const BOT_TOKEN = "8697935116:AAGkCTTPE0a509WNzkOTbcJEMJtDDyGOgm0";
+let BOT_USERNAME = "";
+
+// ── TELEGRAM INIT ─────────────────────────────────
+let tg = window.Telegram?.WebApp;
+if (tg) tg.expand();
+
+// ── STATE ─────────────────────────────────────────
+let points = parseInt(localStorage.getItem("points") || "0");
+let streak  = parseInt(localStorage.getItem("streak")  || "0");
+let lastCheckin = localStorage.getItem("lastCheckin") || "";
+let completedTasks = JSON.parse(localStorage.getItem("completedTasks") || "[]");
+let isLight = localStorage.getItem("theme") === "light";
+
+// ── UID ───────────────────────────────────────────
+function initUser() {
+  const user = tg?.initDataUnsafe?.user;
+  if (user) {
+    document.getElementById("name").innerText =
+      user.first_name + (user.last_name ? " " + user.last_name : "");
+    document.getElementById("avatar").src =
+      `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`;
+    if (!localStorage.getItem("uid")) {
+      localStorage.setItem("uid", String(user.id));
+    }
+  } else {
+    if (!localStorage.getItem("uid")) {
+      localStorage.setItem("uid", "UID-" + Math.random().toString(36).substr(2,8).toUpperCase());
+    }
+    document.getElementById("avatar").src =
+      `https://api.dicebear.com/7.x/avataaars/svg?seed=${localStorage.getItem("uid")}`;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  const uid = localStorage.getItem("uid");
+  document.getElementById("userId").innerText = uid;
+  setupRefCode(uid);
+}
+
+// ── BOT USERNAME + REF LINK ───────────────────────
+async function fetchBotUsername() {
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getMe`);
+    const data = await res.json();
+    if (data.ok) {
+      BOT_USERNAME = data.result.username;
+      const uid = localStorage.getItem("uid") || "unknown";
+      setupRefCode(uid);
+    }
+  } catch (e) {
+    console.warn("Could not fetch bot username:", e);
   }
 }
 
-.card, .quest-item, .referral-card, .withdraw-premium-card {
-  animation: slideUp 0.4s ease forwards;
+function setupRefCode(uid) {
+  const shortCode = "REF" + uid.toString().replace(/[^a-z0-9]/gi,'').substr(0,8).toUpperCase();
+  document.getElementById("refCode").innerText = shortCode;
+
+  const link = BOT_USERNAME
+    ? `https://t.me/${BOT_USERNAME}?start=ref-${uid}`
+    : `https://t.me/YourBot?start=ref-${uid}`;
+
+  document.getElementById("refLink").innerText = link;
+  document.getElementById("refLink").title = link;
 }
+
+// ── RESTORE TASKS ─────────────────────────────────
+function restoreTasks() {
+  completedTasks.forEach(taskId => {
+    const row = document.getElementById(taskId);
+    const chk = row?.querySelector("input[type=checkbox]");
+    const done = document.getElementById("done-" + taskId);
+    if (chk) { chk.checked = true; chk.disabled = true; }
+    if (done) done.classList.remove("hidden");
+    row?.classList.add("done");
+  });
+}
+
+// ── UPDATE UI ─────────────────────────────────────
+function updateUI() {
+  // points with animation
+  const el = document.getElementById("points");
+  const old = parseInt(el.innerText || "0");
+  if (old !== points) animateNum(el, old, points, 600);
+
+  document.getElementById("balance").innerText = points;
+  document.getElementById("streak").innerText   = streak + " day streak";
+
+  const btn = document.getElementById("withdrawBtn");
+  btn.disabled = points < 1000;
+}
+
+function animateNum(el, from, to, dur) {
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.innerText = Math.round(from + (to - from) * ease);
+    if (p < 1) requestAnimationFrame(step);
+    else el.innerText = to;
+  }
+  requestAnimationFrame(step);
+}
+
+// ── TASK COMPLETE ─────────────────────────────────
+function completeTask(val, el, taskId) {
+  if (el.checked) {
+    if (completedTasks.includes(taskId)) { el.checked = false; return; }
+
+    points += val;
+    completedTasks.push(taskId);
+    localStorage.setItem("points", points);
+    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+
+    el.disabled = true;
+    document.getElementById("done-" + taskId)?.classList.remove("hidden");
+    document.getElementById(taskId)?.classList.add("done");
+
+    showToast("Task completed! +" + val + " pts", "success");
+    burstParticles(el);
+    updateUI();
+  }
+}
+
+// ── CHECK-IN ──────────────────────────────────────
+function checkIn() {
+  const today = new Date().toDateString();
+  if (lastCheckin === today) {
+    showToast("Already checked in today!", "error");
+    return;
+  }
+
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  streak = (lastCheckin === yesterday) ? streak + 1 : 1;
+  points += 20;
+  lastCheckin = today;
+
+  localStorage.setItem("streak", streak);
+  localStorage.setItem("points", points);
+  localStorage.setItem("lastCheckin", lastCheckin);
+
+  openModal("checkinModal");
+  setTimeout(() => {
+    document.getElementById("dailyBonus").classList.remove("hidden");
+  }, 600);
+  updateUI();
+}
+
+// ── COPY ──────────────────────────────────────────
+function copyUID() {
+  const uid = localStorage.getItem("uid") || "";
+  navigator.clipboard.writeText(uid).catch(() => {});
+  showToast("User ID copied!", "success");
+}
+
+function copyRefCode() {
+  const code = document.getElementById("refCode").innerText;
+  navigator.clipboard.writeText(code).catch(() => {});
+  showToast("Referral code copied!", "success");
+}
+
+function copyRef() {
+  const link = document.getElementById("refLink").innerText;
+  navigator.clipboard.writeText(link).catch(() => {});
+
+  const badge = document.getElementById("copiedBadge");
+  badge.classList.remove("hidden");
+  const btn = document.getElementById("copyLinkBtn");
+  btn.style.opacity = "0.7";
+  setTimeout(() => {
+    badge.classList.add("hidden");
+    btn.style.opacity = "";
+  }, 2500);
+  showToast("Referral link copied!", "success");
+}
+
+// ── WITHDRAW ─────────────────────────────────────
+function withdraw() {
+  if (points >= 1000) {
+    openModal("withdrawModal");
+  } else {
+    showToast("Need at least 1000 pts to withdraw", "error");
+  }
+}
+
+// ── THEME ─────────────────────────────────────────
+function toggleTheme() {
+  isLight = !isLight;
+  document.body.classList.toggle("light", isLight);
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+
+  const btn = document.getElementById("themeBtn");
+  btn.innerHTML = isLight
+    ? `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+    : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+}
+
+// ── NAV TABS ─────────────────────────────────────
+function setTab(index, el) {
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+}
+
+// ── MODAL ─────────────────────────────────────────
+function openModal(id) {
+  document.getElementById(id).classList.remove("hidden");
+}
+function closeModal(id) {
+  document.getElementById(id).classList.add("hidden");
+}
+// Close modal on overlay click
+document.querySelectorAll(".modal-overlay").forEach(overlay => {
+  overlay.addEventListener("click", function(e) {
+    if (e.target === this) this.classList.add("hidden");
+  });
+});
+
+// ── TOAST ─────────────────────────────────────────
+function showToast(msg, type = "success") {
+  const container = document.getElementById("toastContainer");
+  const t = document.createElement("div");
+  t.className = "toast" + (type === "error" ? " toast-error" : "");
+
+  const icon = type === "error"
+    ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`
+    : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+  t.innerHTML = icon + `<span>${msg}</span>`;
+  container.appendChild(t);
+  setTimeout(() => { t.style.opacity="0"; t.style.transform="translateY(-6px)"; t.style.transition="0.3s"; }, 2200);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ── PARTICLE BURST ────────────────────────────────
+function burstParticles(source) {
+  const rect = source.getBoundingClientRect();
+  const cx = rect.left + rect.width  / 2;
+  const cy = rect.top  + rect.height / 2;
+  const colors = ["#a855f7","#6366f1","#22c55e","#f59e0b","#f97316"];
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    const angle = (Math.PI * 2 / 10) * i;
+    const dist  = 40 + Math.random() * 40;
+    p.style.cssText = `
+      left:${cx}px; top:${cy}px;
+      background:${colors[i % colors.length]};
+      --tx:${Math.cos(angle)*dist}px;
+      --ty:${Math.sin(angle)*dist}px;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+// ── LOGOUT ────────────────────────────────────────
+function logout() {
+  if (confirm("Are you sure you want to logout?")) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+// ── INIT ──────────────────────────────────────────
+(function init() {
+  if (isLight) document.body.classList.add("light");
+  initUser();
+  restoreTasks();
+  updateUI();
+  fetchBotUsername();
+})();
