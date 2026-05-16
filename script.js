@@ -129,10 +129,13 @@ function fallbackRefLink() {
 
 // ── TASKS DEFINITION ───────────────────────────────
 const SOCIAL_TASKS = [
-  { id: "twitter", name: "Follow us on Twitter", desc: "Follow @CryptoGrow on Twitter", points: 50, verifyUrl: "https://twitter.com/intent/follow?screen_name=CryptoGrow" },
-  { id: "telegram", name: "Join Telegram group", desc: "Join our official Telegram community", points: 100, verifyUrl: "https://t.me/cryptogrowofficial" },
-  { id: "share", name: "Share post", desc: "Share our announcement post", points: 80, verifyUrl: "https://t.me/cryptogrowofficial/1" },
-{ id: "share", name: "Say Hey", desc: "Send a message", points: 5000, verifyUrl: "https://t.me/arman_rhaman" }
+  { id: "twitter", name: "Follow us on Twitter", desc: "Follow @arman_rhaman on Twitter", points: 1500, verifyUrl: "https://twitter.com/intent/follow?screen_name=arman_rhaman" },
+  { id: "telegram", name: "Join Telegram group", desc: "Join our official Telegram community", points: 1000, verifyUrl: "https://t.me/seemybiodata" },
+  { id: "share", name: "Share post", desc: "Share our announcement post", points: 800, verifyUrl: "https://t.me/seemybiodata" },
+  // নতুন টাস্ক যোগ করুন এখানে
+  { id: "youtube", name: "Subscribe on YouTube", desc: "Subscribe to our YouTube channel", points: 1200, verifyUrl: "https://youtube.com/@cryptogrow" },
+  { id: "discord", name: "Join Discord", desc: "Join our Discord community", points: 1000, verifyUrl: "https://discord.gg/cryptogrow" },
+  { id: "instagram", name: "Follow on Instagram", desc: "Follow @mr_arman_rhaman on Instagram", points: 6000, verifyUrl: "https://instagram.com/mr_arman_rhaman" }
 ];
 
 function renderTasks() {
