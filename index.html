@@ -2,266 +2,253 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>CryptoGrow | Earn & Grow</title>
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoGrow</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body id="body">
 
-<div class="mobile-container">
-  
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <span>9:41</span>
-    <span><i class="fas fa-signal"></i> <i class="fas fa-battery-full"></i></span>
-  </div>
+<div class="app-wrap">
+  <div class="max-wrap">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="greeting">
-      <span class="wave">👋</span>
-      <div>
-        <p class="greeting-text">Welcome back</p>
-        <h1 id="userName">Alex Johnson</h1>
-      </div>
-    </div>
-    <div class="header-actions">
-      <button id="themeToggle" class="icon-circle">
-        <i class="fas fa-moon"></i>
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <button onclick="toggleTheme()" class="icon-btn" id="themeBtn" title="Toggle theme">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-      <button id="logoutBtn" class="icon-circle logout-icon">
-        <i class="fas fa-arrow-right-from-bracket"></i>
+      <div class="logo-text">CryptoGrow</div>
+      <button onclick="logout()" class="logout-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
       </button>
     </div>
-  </div>
 
-  <!-- User ID Badge -->
-  <div class="user-id-badge">
-    <i class="fas fa-id-card"></i>
-    <span id="userId">UID-2F7K9LQ</span>
-    <button onclick="copyUserId()" class="copy-id-btn"><i class="fas fa-copy"></i></button>
-  </div>
-
-  <!-- Stats Cards Row -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-icon purple"><i class="fas fa-star"></i></div>
-      <div class="stat-info">
-        <span class="stat-label">Total Points</span>
-        <span class="stat-value" id="pointsDisplay">0</span>
+    <!-- PROFILE -->
+    <div class="card profile-card anim" style="--d:0.05s">
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <img id="avatar" class="avatar-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=default" alt="Avatar"/>
+        <div class="online-dot"></div>
       </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon orange"><i class="fas fa-fire"></i></div>
-      <div class="stat-info">
-        <span class="stat-label">Streak</span>
-        <span class="stat-value" id="streakDisplay">0</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Daily Check-in Card -->
-  <div class="card checkin-card">
-    <div class="checkin-content">
-      <div class="checkin-icon">
-        <i class="fas fa-calendar-alt"></i>
-      </div>
-      <div class="checkin-text">
-        <h3>Daily Check-in</h3>
-        <p>Check in daily to earn rewards</p>
-      </div>
-    </div>
-    <button id="checkinBtn" class="checkin-btn">
-      <span>Check In</span>
-      <i class="fas fa-arrow-right"></i>
-    </button>
-  </div>
-
-  <!-- Quest Section (Tasks) -->
-  <div class="section-header">
-    <h2><i class="fas fa-trophy"></i> Daily Quests</h2>
-    <span class="section-badge">+230 available</span>
-  </div>
-
-  <div class="quest-list">
-    <div class="quest-item" data-quest="twitter">
-      <div class="quest-icon twitter-bg">
-        <i class="fab fa-twitter"></i>
-      </div>
-      <div class="quest-info">
-        <h4>Follow on Twitter</h4>
-        <p>Follow our official Twitter page</p>
-      </div>
-      <div class="quest-reward">
-        <span class="reward-amount">+50</span>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="taskTwitter" onchange="completeTask(50, this, 'twitter')">
+      <div class="profile-info">
+        <h2 class="profile-name" id="name">Alex Johnson</h2>
+        <div class="uid-row">
+          <span class="uid-label">User ID:</span>
+          <span class="uid-chip" id="userId">UID-2F7K9LQ</span>
+          <button onclick="copyUID()" class="copy-btn" title="Copy UID">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="quest-item" data-quest="telegram">
-      <div class="quest-icon telegram-bg">
-        <i class="fab fa-telegram"></i>
+    <!-- DAILY CHECK-IN -->
+    <div class="card checkin-card anim" style="--d:0.10s">
+      <div class="checkin-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </div>
-      <div class="quest-info">
-        <h4>Join Telegram</h4>
-        <p>Join our Telegram community</p>
+      <div class="checkin-info">
+        <div class="checkin-title">Daily Check-in</div>
+        <div class="streak-row">
+          <svg class="flame-svg" width="15" height="15" viewBox="0 0 24 24"><path d="M12 2C8.5 7 6 10 6 14a6 6 0 0 0 12 0c0-4-2.5-7-6-12zm0 16a2 2 0 0 1-2-2c0-2 2-4 2-4s2 2 2 4a2 2 0 0 1-2 2z" fill="#f97316"/></svg>
+          <span id="streak" class="streak-text">0 day streak</span>
+        </div>
+        <p class="checkin-hint">Check in daily and keep your streak going!</p>
       </div>
-      <div class="quest-reward">
-        <span class="reward-amount">+100</span>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="taskTelegram" onchange="completeTask(100, this, 'telegram')">
+      <button onclick="checkIn()" class="btn-primary" id="checkinBtn">Check In</button>
+    </div>
+
+    <!-- POINTS & TASKS -->
+    <div class="card points-card anim" style="--d:0.15s">
+      <div class="points-header">
+        <div>
+          <div class="points-label">Total Points Earned</div>
+          <div class="points-value">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#a855f7" stroke="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+            <span id="points" class="pts-num">0</span>
+            <span class="pts-tag">pts</span>
+          </div>
+        </div>
+        <div class="trophy-area">
+          <div class="trophy-glow"></div>
+          <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+        </div>
+      </div>
+
+      <div class="tasks-list">
+        <div class="task-row" id="task-twitter">
+          <label class="custom-check">
+            <input type="checkbox" onchange="completeTask(50,this,'task-twitter')">
+            <span class="checkmark"></span>
+          </label>
+          <span class="task-name">Follow us on Twitter</span>
+          <span class="task-pts">+50 pts</span>
+          <span class="task-done-icon hidden" id="done-task-twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-1 14l-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7z"/></svg>
+          </span>
+        </div>
+        <div class="task-row" id="task-telegram">
+          <label class="custom-check">
+            <input type="checkbox" onchange="completeTask(100,this,'task-telegram')">
+            <span class="checkmark"></span>
+          </label>
+          <span class="task-name">Join Telegram group</span>
+          <span class="task-pts">+100 pts</span>
+          <span class="task-done-icon hidden" id="done-task-telegram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-1 14l-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7z"/></svg>
+          </span>
+        </div>
+        <div class="task-row" id="task-share">
+          <label class="custom-check">
+            <input type="checkbox" onchange="completeTask(80,this,'task-share')">
+            <span class="checkmark"></span>
+          </label>
+          <span class="task-name">Share post</span>
+          <span class="task-pts">+80 pts</span>
+          <span class="task-done-icon hidden" id="done-task-share">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm-1 14l-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7z"/></svg>
+          </span>
         </div>
       </div>
     </div>
 
-    <div class="quest-item" data-quest="share">
-      <div class="quest-icon share-bg">
-        <i class="fas fa-share-alt"></i>
-      </div>
-      <div class="quest-info">
-        <h4>Share Post</h4>
-        <p>Share our post on social media</p>
-      </div>
-      <div class="quest-reward">
-        <span class="reward-amount">+80</span>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="taskShare" onchange="completeTask(80, this, 'share')">
+    <!-- BOTTOM CARDS ROW -->
+    <div class="two-col anim" style="--d:0.20s">
+
+      <!-- REFER -->
+      <div class="card sub-card refer-card">
+        <div class="sub-card-head">
+          <div class="sub-icon-wrap refer-color">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="sub-title">Refer a Friend</div>
+            <div class="sub-hint">Earn <span class="accent-text">200 points</span> per referral</div>
+          </div>
+        </div>
+
+        <div class="refcode-box">
+          <span id="refCode" class="refcode-text">REF...</span>
+          <button onclick="copyRefCode()" class="icon-mini-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+
+        <div class="reflink-input">
+          <span id="refLink" class="reflink-text">Loading...</span>
+        </div>
+
+        <button onclick="copyRef()" class="btn-full btn-purple" id="copyLinkBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Copy Link
+        </button>
+
+        <div class="copied-pill hidden" id="copiedBadge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Copied!
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Referral Section -->
-  <div class="section-header">
-    <h2><i class="fas fa-users"></i> Invite Friends</h2>
-    <span class="section-badge">200 pts each</span>
-  </div>
-
-  <div class="referral-card">
-    <div class="referral-stats">
-      <div class="referral-stat">
-        <span class="stat-number" id="referralCount">0</span>
-        <span class="stat-label">Referrals</span>
-      </div>
-      <div class="referral-divider"></div>
-      <div class="referral-stat">
-        <span class="stat-number" id="referralEarned">0</span>
-        <span class="stat-label">Points Earned</span>
-      </div>
-    </div>
-    <div class="referral-link-box">
-      <span id="refLinkText" class="ref-link">Loading...</span>
-      <button id="copyRefBtn" class="copy-link-btn">
-        <i class="fas fa-copy"></i>
-      </button>
-    </div>
-    <p class="referral-note">
-      <i class="fas fa-info-circle"></i> Each friend earns you 200 points
-    </p>
-  </div>
-
-  <!-- Withdraw Section - Redesigned Premium -->
-  <div class="section-header">
-    <h2><i class="fas fa-coins"></i> Withdraw Funds</h2>
-    <span class="section-badge">min 1000 pts</span>
-  </div>
-
-  <div class="withdraw-premium-card">
-    <div class="balance-preview">
-      <div class="balance-glow"></div>
-      <div class="balance-content">
-        <span class="balance-label">Available Balance</span>
-        <div class="balance-amount">
-          <span class="currency-icon"><i class="fas fa-gem"></i></span>
-          <span id="balanceAmount">0</span>
-          <span class="currency-unit">points</span>
+      <!-- WITHDRAW -->
+      <div class="card sub-card withdraw-card">
+        <div class="sub-card-head">
+          <div class="sub-icon-wrap withdraw-color">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <div class="sub-title">Withdraw</div>
+            <div class="sub-hint">Withdraw your earnings</div>
+          </div>
         </div>
-        <div class="progress-container">
-          <div class="progress-bar" id="withdrawProgress" style="width: 0%"></div>
+
+        <div class="balance-row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#818cf8" stroke="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span class="balance-label">Balance</span>
         </div>
-        <div class="progress-text">
-          <span>Progress to withdrawal</span>
-          <span id="progressPercent">0%</span>
-        </div>
+        <div class="balance-num"><span id="balance">0</span> <span class="pts-tag">pts</span></div>
+
+        <button id="withdrawBtn" onclick="withdraw()" class="btn-full btn-purple" disabled>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Withdraw
+        </button>
+        <p class="withdraw-hint">Minimum 1000 pts to withdraw</p>
       </div>
-    </div>
-    
-    <div class="withdraw-options">
-      <div class="withdraw-method active">
-        <i class="fab fa-usdt"></i>
-        <span>USDT (TRC20)</span>
-      </div>
-      <div class="withdraw-method">
-        <i class="fab fa-bitcoin"></i>
-        <span>BTC</span>
-      </div>
-      <div class="withdraw-method">
-        <i class="fas fa-phone-alt"></i>
-        <span>Mobile</span>
-      </div>
+
     </div>
 
-    <div class="input-group">
-      <label>Wallet Address / Phone</label>
-      <div class="input-field">
-        <i class="fas fa-wallet"></i>
-        <input type="text" id="withdrawAddress" placeholder="Enter your wallet address">
-      </div>
-    </div>
+    <div class="footer-text">&#169; 2025 CryptoGrow. All rights reserved.</div>
 
-    <div class="input-group">
-      <label>Amount to Withdraw</label>
-      <div class="input-field">
-        <i class="fas fa-coins"></i>
-        <input type="number" id="withdrawAmount" placeholder="Min 1000 points">
-      </div>
-    </div>
-
-    <button id="withdrawBtn" class="withdraw-submit-btn">
-      <span>Withdraw Now</span>
-      <i class="fas fa-arrow-right"></i>
-    </button>
-
-    <div class="withdraw-footer">
-      <div class="fee-info">
-        <i class="fas fa-clock"></i>
-        <span>Processing: 24-48 hours</span>
-      </div>
-      <div class="fee-info">
-        <i class="fas fa-shield-alt"></i>
-        <span>Secure withdrawal</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div class="bottom-nav">
-    <button class="nav-item active">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
-    </button>
-    <button class="nav-item">
-      <i class="fas fa-chart-simple"></i>
-      <span>Analytics</span>
-    </button>
-    <button class="nav-item">
-      <i class="fas fa-gift"></i>
-      <span>Rewards</span>
-    </button>
-    <button class="nav-item">
-      <i class="fas fa-user"></i>
-      <span>Profile</span>
-    </button>
   </div>
 </div>
 
-<!-- Toast Container -->
-<div id="toast" class="toast-modern"></div>
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="setTab(0,this)">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-btn" onclick="setTab(1,this)">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>Tasks</span>
+  </button>
+  <button class="nav-btn" onclick="setTab(2,this)">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Refer</span>
+  </button>
+  <button class="nav-btn" onclick="setTab(3,this)">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+    <span>Withdraw</span>
+  </button>
+</nav>
+
+<!-- TOAST STACK -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- CHECK-IN MODAL -->
+<div class="modal-overlay hidden" id="checkinModal">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeModal('checkinModal')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-circle green-circle">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="modal-heading">Check-in successful!</div>
+    <div class="modal-body">Your streak has been updated.</div>
+    <button class="btn-full btn-purple mt16" onclick="closeModal('checkinModal')">OK</button>
+  </div>
+</div>
+
+<!-- WITHDRAW MODAL -->
+<div class="modal-overlay hidden" id="withdrawModal">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeModal('withdrawModal')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-circle green-circle">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="modal-heading">Withdrawal request sent!</div>
+    <div class="modal-body">(min 1000 pts)</div>
+    <button class="btn-full btn-purple mt16" onclick="closeModal('withdrawModal')">OK</button>
+  </div>
+</div>
+
+<!-- DAILY BONUS POPUP -->
+<div class="bonus-popup hidden" id="dailyBonus">
+  <button class="bonus-close" onclick="document.getElementById('dailyBonus').classList.add('hidden')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="bonus-gift-icon">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+  </div>
+  <div class="bonus-title">DAILY BONUS</div>
+  <div class="bonus-desc">Come back tomorrow<br>for more points!</div>
+</div>
 
 <script src="script.js"></script>
 </body>
